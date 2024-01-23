@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.Data;
 using ContosoPizza.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Services
 {
@@ -26,7 +27,17 @@ namespace ContosoPizza.Services
             if (_context.Pizzas != null)
             {
                 _context.Pizzas.Add(pizza);
-                _context.SaveChanges();
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Log the error or rethrow the exception
+                    throw;
+                }
+
+
             }
         }
 

@@ -31,7 +31,9 @@
     </div>
     <div class="form-group">
         <label asp-for="NewPizza.Price" class="control-label"></label>
-        <input asp-for="NewPizza.Price" class="form-control" />
+        <input asp-for="NewPizza.Price" class="form-control"
+               data-val-number="Le champ Prix doit être un nombre."
+               data-val-number-culture="fr-FR" />
         <span asp-validation-for="NewPizza.Price" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -71,4 +73,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $.validator.methods.number = function (value, element) {
+                var culture = $(element).data('valNumberCulture');
+                if (culture) {
+                    var num = Globalize.parseFloat(value, 10, culture);
+                    return this.optional(element) || !isNaN(num);
+                } else {
+                    return this.optional(element) || /^-?\d+\.?\d*$/.test(value);
+                }
+            }
+        });
+    </script>
 }

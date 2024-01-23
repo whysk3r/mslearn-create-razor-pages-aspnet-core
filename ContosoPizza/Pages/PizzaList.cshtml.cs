@@ -24,25 +24,26 @@ namespace ContosoPizza.Pages
         public void OnGet()
         {
             PizzaList = _service.GetPizzas();
-
         }
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid || NewPizza == null)
             {
+                PizzaList = _service.GetPizzas();
                 return Page();
             }
 
             _service.AddPizza(NewPizza);
 
-            return RedirectToAction("Get");
+            PizzaList = _service.GetPizzas();
+            return Page();
         }
 
         public IActionResult OnPostDelete(int id)
         {
             _service.DeletePizza(id);
-
-            return RedirectToAction("Get");
+            PizzaList = _service.GetPizzas();
+            return Page();
         }
 
     }
